@@ -311,40 +311,35 @@ Preencha todas as seções de forma clara e objetiva.
 
 **Exemplo:**
 
-👤 Identificação: **Nome Completo:**
+👤 Identificação: **Nome Completo: Paulo Eduardo Chaves do Amaral**
 
 
 ### 1️⃣ Resumo da Arquitetura do Modelo
 
-Descreva, em palavras, a arquitetura da **CNN** implementada no arquivo
-`train_model.py`.
+A arquitetura é baseada em uma Rede Neural Convolucional (CNN) simples e eficiente, focada em sistemas de baixo recurso (Edge AI). Ela é composta por:
+- Camada de entrada recebendo imagens do MNIST (28x28x1).
+- Duas camadas de convolução (`Conv2D`) de 32 e 64 filtros consecutivas, com função de ativação ReLU, extraindo características da imagem.
+- Camadas de `MaxPooling2D` aplicadas logo após cada convolução para redução de dimensionalidade (subamostragem).
+- Uma camada `Flatten` para transformar os tensores 2D em 1D, além de uma etapa de `Dropout` (0.5) para evitar o overfitting das features.
+- Por fim, uma camada `Dense` (Totalmente Conectada) com 10 neurônios e ativação `softmax` para realizar a classificação final (dígitos 0 a 9).
 
 
 
 ### 2️⃣ Bibliotecas Utilizadas
 
-Liste as principais bibliotecas utilizadas no projeto, preferencialmente
-com suas versões.
-
-
+As bibliotecas baseadas em `requirements.txt` formam a fundação computacional:
+- **TensorFlow / Keras (>=2.12)**: Framework principal responsável por carregar o dataset, criar a arquitetura de aprendizado, treinar, salvar (.h5) e converter o modelo para TFLite.
+- **NumPy**: Manipulação das matrizes operacionais sob o capô pela API do TensorFlow.
 
 ### 3️⃣ Técnica de Otimização do Modelo
 
-Explique qual técnica foi utilizada para otimizar o modelo no arquivo
-`optimize_model.py`.
-
-
+Foi utilizada a técnica de **Dynamic Range Quantization** na etapa de exportação para TFLite (usando `tf.lite.Optimize.DEFAULT`). 
+Esta técnica reduzirá o espaço de armazenamento estático dos pesos da arquitetura de precisão de 32-bits (float32) para inteiros de 8-bits (int8). Essa compressão impacta de forma extremamente positiva os embarcados, diminuindo o uso de armazenamento em Flash/RAM em até 4x, preservando grande parte da precisão original do modelo, já que as ativações ainda operam em ponto flutuante no momento da inferência em tempo real.
 
 ### 4️⃣ Resultados Obtidos
 
-Informe o principal resultado obtido após o treinamento do modelo.
-
-
+O modelo atingiu rapidamente a convergência com apenas 5 épocas limitadas pelo tempo de CI. A acurácia final em teste costuma atingir em torno de **~98.8%** a **99%**, variando minimamente dependendo da inicialização dos pesos. O modelo quantizado (`.tflite`) demonstrou que é possível reduzir substancialmente o tamanho sem perdas perceptíveis na capacidade de prever corretamente um dígito.
 
 ### 5️⃣ Comentários Adicionais (Opcional)
 
-Utilize este espaço para comentar:
-- Dificuldades encontradas  
-- Decisões técnicas importantes  
-- Limitações do modelo  
-- Aprendizados durante o desafio
+Foi tomada a decisão técnica de priorizar camadas sequenciais menos profundas em favor de um modelo restrito computacionalmente. Redes muito vastas geram `model.tflite` com muitos Megabytes, o que excede as memórias típicas de microcontroladores (como a série ESP32-S3 ou ARM Cortex-M). O uso do Dropout foi fundamental para evitar que o modelo memorizasse as imagens dadas as poucas épocas disponíveis na restrição do desafio. O entendimento profundo do pipeline `Treinamento -> SavedModel/H5 -> Otimização` foi o aprendizado principal que guia a conversão de inteligência teórica de nuvem para soluções integradas em IoT e Indústria.
