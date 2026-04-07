@@ -7,6 +7,7 @@ Esta atividade tem como objetivo avaliar competências técnicas relacionadas a 
 > 🎯 **Importante**  
 > O foco deste desafio é avaliar sua capacidade de **projetar, treinar e otimizar um modelo de IA**.  
 
+
 ---
 
 ## 📌 Navegação Rápida
