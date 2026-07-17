@@ -85,28 +85,43 @@ projetos/1-classificacao-mnist/
 
 ## 📝 Relatório do Candidato
 
-👤 **Nome Completo:**
+👤 **Nome Completo:** Erick Felipe
 
 ### 1️⃣ Resumo da Arquitetura do Modelo
 
-Descreva, em palavras, a arquitetura da CNN implementada em `train_model.py` (número de blocos convolucionais, uso de batch normalization/dropout, estratégia de validação/early stopping).
+A arquitetura implementada em train_model.py é uma Rede Neural Convolucional (CNN) sequencial leve. Ela é composta por 3 blocos convolucionais encadeados, onde cada bloco contém uma camada Conv2D para extração de características, seguida de BatchNormalization para estabilizar o aprendizado e MaxPooling2D para redução de dimensionalidade. Após a extração, os dados são achatados (Flatten) e passam por uma camada de Dropout (0.5) atuando como regularizador tático para evitar overfitting. A saída é uma camada Dense com ativação softmax para as 10 classes.
+A estratégia de validação utilizou um validation_split de 10% sobre o conjunto de treino, acoplado a um callback de EarlyStopping monitorando a val_loss (com paciência de 3 épocas e restauração dos melhores pesos) para garantir eficiência de processamento em CPU.
 
 ### 2️⃣ Bibliotecas Utilizadas
 
-Liste as principais bibliotecas utilizadas, preferencialmente com suas versões.
+TensorFlow / Keras: Versão >= 2.12
+NumPy: Instalado via resolução de dependências do ambiente
+OS: Biblioteca nativa padrão do Python
 
 ### 3️⃣ Técnica de Otimização do Modelo
 
-Explique qual técnica foi utilizada para otimizar o modelo em `optimize_model.py`.
+A otimização em optimize_model.py foi realizada através de Dynamic Range Quantization utilizando o tf.lite.Optimize.DEFAULT. Esta técnica reduz a precisão dos pesos da rede de ponto flutuante de 32 bits (Float32) para inteiros de 8 bits (Int8). Isso comprime drasticamente o tamanho físico do modelo e acelera a inferência em processadores limitados (Edge AI), mantendo a acurácia praticamente inalterada.
 
 ### 4️⃣ Resultados Obtidos
 
-Informe a acurácia de validação obtida e o tamanho dos arquivos `model.h5` e `model.tflite`.
+Acurácia de Validação: 99.08%
+
+Tamanho do arquivo model.h5: 1,3M
+
+Tamanho do arquivo model.tflite: 117K
 
 ### 5️⃣ Comentários Adicionais (Opcional)
 
-Dificuldades encontradas, decisões técnicas importantes, limitações do modelo, aprendizados durante o desafio.
+A decisão técnica de limitar a rede a 3 blocos convolucionais provou-se altamente eficiente para o ambiente restrito do edital (treinamento apenas em CPU). O modelo atingiu convergência ideal e ativou o EarlyStopping rapidamente. A quantização foi extremamente bem-sucedida, reduzindo o tamanho do modelo em cerca de 90% (de 1,3M para 117K) sem perda aparente de precisão nos testes práticos.
 
 ### 6️⃣ Exemplo de Inferência
 
-Cole a saída do terminal ao rodar `run_inference.py` (predito vs. real para as 5+ amostras), e comente brevemente se houve algum caso interessante (acerto ou erro) entre as amostras testadas.
+Rodando inferencia em 5 amostras usando model.tflite:
+
+Amostra 1: predito=7 | real=7
+Amostra 2: predito=2 | real=2
+Amostra 3: predito=1 | real=1
+Amostra 4: predito=0 | real=0
+Amostra 5: predito=4 | real=4
+
+Como observado nas amostras acima, o modelo TFLite manteve sua integridade analítica após a quantização Int8, acertando com precisão o dígito 7 na Amostra 1 e o dígito 4 na Amostra 5, comprovando que a drástica redução de tamanho não penalizou a inferência na prática.
