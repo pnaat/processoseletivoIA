@@ -11,3 +11,6 @@ __pycache__/
 # Ambientes / editores
 .vscode/
 .DS_Store
+
+# Scripts auxiliares
+projetos/3-deteccao-mascaras/tools/
