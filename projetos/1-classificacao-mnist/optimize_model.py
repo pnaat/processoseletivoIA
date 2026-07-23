@@ -13,3 +13,21 @@ import os
 # ---------------------------------------------------------------------------
 
 # insira seu código aqui
+
+# Carregar o modelo treinado
+model = tf.keras.models.load_model("model.h5")
+
+# Configurar o conversor
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+# Aplicar a técnica de otimização
+converter.optimizations = [tf.lite.Optimize.DEFAULT]
+
+# conversão
+tflite_model = converter.convert()
+
+# Salvar
+with open("model.tflite", "wb") as f:
+    f.write(tflite_model)
+
+print("Otimização concluída. Arquivo 'model.tflite' gerado com sucesso.")
