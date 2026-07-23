@@ -85,7 +85,7 @@ projetos/1-classificacao-mnist/
 
 ## 📝 Relatório do Candidato
 
-👤 **Nome Completo:** Erick Felipe
+👤 **Nome Completo:** Rian Lucas da silva
 
 ### 1️⃣ Resumo da Arquitetura do Modelo
 
