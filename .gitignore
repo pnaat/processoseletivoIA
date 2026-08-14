@@ -1,13 +1,41 @@
-# Artefatos temporários de treinamento (Ultralytics YOLO - Projeto 3)
-runs/
-*.cache
-yolo11n.pt
-yolo11n.onnx
+# Ambientes virtuais
+.venv/
+venv/
+env/
+.conda/
 
-# Python
-__pycache__/
-*.pyc
+# Variáveis e configurações locais
+.env
+.env.*
+!.env.example
 
-# Ambientes / editores
-.vscode/
-.DS_Store
+# Caches e ferramentas Python
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Empacotamento
+build/
+dist/
+*.egg-info/
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.temp
+.ipynb_checkpoints/
+
+# Editores e sistema operacional
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+
+# TensorFlow
+logs/
+checkpoints/
+*.ckpt

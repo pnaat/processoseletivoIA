@@ -1,0 +1,37 @@
+# Normalização de finais de linha
+* text=auto
+
+# Código, documentação e configuração usam LF em todas as plataformas
+*.py       text eol=lf
+*.md       text eol=lf
+*.txt      text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.json     text eol=lf
+*.toml     text eol=lf
+*.sh       text eol=lf
+
+# Scripts específicos do Windows usam CRLF
+*.bat      text eol=crlf
+*.cmd      text eol=crlf
+*.ps1      text eol=crlf
+
+# Modelos treinados e outros formatos binários
+*.h5       binary
+*.keras    binary
+*.tflite   binary
+*.pt       binary
+*.onnx     binary
+*.npz      binary
+*.npy      binary
+
+# Imagens e arquivos compactados
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.gif      binary
+*.webp     binary
+*.ico      binary
+*.zip      binary
+*.gz       binary
+
